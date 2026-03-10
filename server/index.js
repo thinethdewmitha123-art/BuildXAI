@@ -356,9 +356,14 @@ if (fs.existsSync(distPath)) {
     console.log('📦 Serving production frontend from dist/');
 }
 
-// ─── Start Server ─────────────────────────────────────────────────────────────
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`\n🏗️  BuildX AI running on http://localhost:${PORT}`);
-    console.log(`   API:      http://localhost:${PORT}/api`);
-    console.log(`   Frontend: ${fs.existsSync(distPath) ? 'Serving from dist/' : 'Use vite dev server'}\n`);
-});
+// ─── Export for Vercel Serverless ──────────────────────────────────────────────
+export default app;
+
+// ─── Start Server (local only) ────────────────────────────────────────────────
+if (!process.env.VERCEL) {
+    app.listen(PORT, '0.0.0.0', () => {
+        console.log(`\n🏗️  BuildX AI running on http://localhost:${PORT}`);
+        console.log(`   API:      http://localhost:${PORT}/api`);
+        console.log(`   Frontend: ${fs.existsSync(distPath) ? 'Serving from dist/' : 'Use vite dev server'}\n`);
+    });
+}
